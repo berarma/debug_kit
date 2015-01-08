@@ -55,7 +55,7 @@ class VariablesPanel extends DebugPanel
             }
         }
 
-        return Hash::filter($errors);
+        return $errors;
     }
 
     /**
