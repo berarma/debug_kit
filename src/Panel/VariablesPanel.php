@@ -74,7 +74,7 @@ class VariablesPanel extends DebugPanel
                 $item = $item->all();
             }
             if (is_resource($item)) {
-                $item = 'Unserializable object - Resource: ' . get_resource_type($item);
+                $item = 'Unserializable type - resource: ' . get_resource_type($item);
             }
             if ($item instanceof Closure ||
                 $item instanceof PDO ||
