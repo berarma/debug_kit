@@ -12,4 +12,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 ?>
-<?= $this->Toolbar->makeNeatArray($content);
+<?php if (!empty($content)): ?>
+<?= $this->Toolbar->dumpValues($content); ?>
+<?php else: ?>
+    <p class="info"><?= __d('debug_kit', 'No Session data.') ?></p>
+<?php endif; ?>
