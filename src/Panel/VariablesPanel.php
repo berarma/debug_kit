@@ -73,6 +73,9 @@ class VariablesPanel extends DebugPanel
             if ($item instanceof Query) {
                 $item = $item->all();
             }
+            if (is_resource($item)) {
+                $item = 'Unserializable object - Resource: ' . get_resource_type($item);
+            }
             if ($item instanceof Closure ||
                 $item instanceof PDO ||
                 $item instanceof SimpleXmlElement
