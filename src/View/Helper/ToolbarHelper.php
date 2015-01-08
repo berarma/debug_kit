@@ -153,6 +153,7 @@ class ToolbarHelper extends Helper
             if (empty($value) && $value !== null && (!is_scalar($value) || is_string($value))) {
                 $out .= '(empty)';
             } elseif (is_array($value)) {
+                $out .= '(' . count($value) . ')';
                 if (is_object($ref)) {
                     $ancestors = new \SplObjectStorage();
                     if ($currentAncestors !== null) {
