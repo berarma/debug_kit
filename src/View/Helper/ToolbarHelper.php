@@ -150,7 +150,7 @@ class ToolbarHelper extends Helper
                 }
             }
 
-            if (empty($value) && $value !== null && !is_numeric($value)) {
+            if (empty($value) && $value !== null && (!is_scalar($value) || is_string($value))) {
                 $out .= '(empty)';
             } elseif (is_array($value)) {
                 if (is_object($ref)) {
@@ -164,10 +164,12 @@ class ToolbarHelper extends Helper
                 }
                 $out .= $this->dumpValues($value, $nextDepth, $ancestors);
             } else {
-                if ($type === 'string') {
+                if (is_string($value)) {
                     $out .= '<span class="data-string">';
                     $out .= h($value);
                     $out .= '</span>';
+                } elseif (is_bool($value)) {
+                    $out .= $value? 'true' : 'false';
                 } else {
                     $out .= h($value);
                 }
