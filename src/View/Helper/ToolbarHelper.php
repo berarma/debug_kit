@@ -122,4 +122,59 @@ class ToolbarHelper extends Helper
         $out .= '</ul>';
         return $out;
     }
+
+    public function dumpValues($values, $currentDepth = 0, \SplObjectStorage $currentAncestors = null)
+    {
+        $className = "neat-array depth-$currentDepth";
+        $nextDepth = $currentDepth + 1;
+        $out = "<ul class=\"$className\">";
+        foreach ($values as $key => $value) {
+            $type = gettype($value);
+            if ($type === 'object') {
+                $type = get_class($value);
+            }
+            if ($currentDepth > 0 && (is_array($value) || $value instanceof \Cake\ORM\Entity)) {
+                $className = 'data-container';
+            } else {
+                $className = '';
+            }
+            $out .= "<li class=\"$className\"><strong>$key</strong><span class=\"data-type\">$type</span>";
+
+            $ref = $value;
+
+            if (is_object($value)) {
+                if (method_exists($value, 'toArray')) {
+                    $value = $value->toArray();
+                } else {
+                    $value = get_object_vars($value);
+                }
+            }
+
+            if (empty($value) && $value !== null && !is_numeric($value)) {
+                $out .= '(empty)';
+            } elseif (is_array($value)) {
+                if (is_object($ref)) {
+                    $ancestors = new \SplObjectStorage();
+                    if ($currentAncestors !== null) {
+                        $ancestors->addAll($currentAncestors);
+                    }
+                    $ancestors->attach($ref);
+                } else {
+                    $ancestors = $currentAncestors;
+                }
+                $out .= $this->dumpValues($value, $nextDepth, $ancestors);
+            } else {
+                if ($type === 'string') {
+                    $out .= '<span class="data-string">';
+                    $out .= h($value);
+                    $out .= '</span>';
+                } else {
+                    $out .= h($value);
+                }
+            }
+            $out .= '</li>';
+        }
+        $out .= '</ul>';
+        return $out;
+    }
 }

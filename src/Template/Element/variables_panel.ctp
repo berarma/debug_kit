@@ -16,10 +16,10 @@ if (isset($error)):
 endif;
 
 if (!empty($content)):
-    echo $this->Toolbar->makeNeatArray($content);
+    echo $this->Toolbar->dumpValues($content);
 endif;
 
 if (!empty($errors)):
     echo '<h4>Validation errors</h4>';
-    echo $this->Toolbar->makeNeatArray($errors);
+    echo $this->Toolbar->dumpValues($errors);
 endif;
